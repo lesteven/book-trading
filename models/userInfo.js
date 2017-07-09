@@ -3,7 +3,13 @@ var Schema = mongoose.Schema;
 
 var UserInfo = new Schema({
 	_id:{type:String,required:true},
-	info:{type:[]},
+	info:[{
+		first:String,
+		middle:String,
+		Last:String,
+		City:String,
+		State:String
+	}],
 	books:{type:[]},
 	orequest:{type:[]},
 	yrequest:{type:[]}

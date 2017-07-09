@@ -1,7 +1,11 @@
 import React,{Component} from 'react';
-
+import { connect } from 'react-redux';
+import {fetchInfo} from '../redux/modules/infoModule';
 
 class Profile extends Component{
+	componentDidMount(){
+		this.props.fetchInfo()
+	}
 	render(){
 		return(
 			<div>
@@ -29,4 +33,15 @@ class Profile extends Component{
 	}
 }
 
-export default Profile;
+const mapStateToProps=(state)=>{
+	return{
+		user:state.user,
+		info:state.info
+	}
+}
+const mapDispatchToProps=(dispatch)=>{
+	return{
+		fetchInfo:()=>dispatch(fetchInfo())
+	}
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Profile);
