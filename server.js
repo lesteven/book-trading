@@ -38,17 +38,19 @@ passport.deserializeUser(User.deserializeUser());
 
 //routers
 var userRouter = require('./routes/userRouter');
-
+var infoRouter = require('./routes/infoRouter');
+/*
 app.get('*.js', function (req, res, next) {
   req.url = req.url + '.gz';
   res.set('Content-Encoding', 'gzip');
   next();
-});
+});*/
 
 app.use(express.static(__dirname + '/dist'));
 app.use('/',express.static(__dirname + '/public'));
 
-app.use('/users',userRouter);
+app.use('/users', userRouter);
+app.use('/info', infoRouter)
 
 //redirect  to client
 app.get('*', function(req,res){

@@ -3,7 +3,7 @@ import React,{Component} from 'react';
 class RegLog extends Component{
 	render(){
 		return(		
-			<div className = 'reglog'>
+			<div className = 'flexBox'>
 				<span className='reglogChild'>
 					<h2>Register</h2>
 					<form action='/users/register' method='post'>

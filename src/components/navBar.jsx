@@ -8,6 +8,8 @@ import {
 } from 'react-router-dom'
 import RegLog from '../views/regLog.jsx';
 import Home from '../views/home.jsx';
+import Profile from '../views/profile.jsx';
+import MyBooks from '../views/myBooks.jsx';
 
 class NavBar extends Component{
 
@@ -21,7 +23,8 @@ class NavBar extends Component{
 	login(){
 		return(
 			<span>
-				<a >{this.props.user.username} </a>
+				<Link to = '/mybooks'>My Books</Link>
+				<Link to ='/profile'>{this.props.user}</Link>
 				<a href ='/users/logout' onClick={this.removeStorage}>Log Out</a>
 			</span>
 		)
@@ -37,12 +40,14 @@ class NavBar extends Component{
 			<div>
 				<nav className = 'navBar'>
 					<Link to ='/'>Home</Link>
-					{this.props.user.username?
+					{this.props.user?
 						this.login():this.noLogin()}
 				</nav>
 
 				<Route exact path= '/' component ={Home}/>
 				<Route path ='/reglog' component ={RegLog}/>
+				<Route path = '/profile' component ={Profile}/>
+				<Route path = '/mybooks' component={MyBooks}/>
 			</div>
 			</Router>
 		)

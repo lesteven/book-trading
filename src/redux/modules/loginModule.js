@@ -11,16 +11,17 @@ export function fetchUser(){
 	return (dispatch) =>{
 		fetch('/users', { credentials : 'same-origin' })
 			.then((response)=> response.json())
-			.then(user => dispatch(userLogin(user)))
+			.then(data => {
+				dispatch(userLogin(data.username))
+			})
 	}
 }
 
 //reducer
-export const user = (state ={username:''}, action)=>{
+export const user = (state ='', action)=>{
 	switch(action.type){
 		case 'USER_LOGIN':
-			return action.user;
-
+			return (action.user || null)
 		default:
 			return state;
 	}
