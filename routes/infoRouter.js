@@ -5,6 +5,17 @@ var UserInfo = require('../models/userInfo');
 infoRouter.route('/')
 
 .get(function(req,res){
+	getUserInfo(req,res)
+})
+
+.post(function(req,res){
+	postUserInfo(req,res)
+})
+.put(function(req,res){
+
+})
+
+function getUserInfo(req,res){
 	UserInfo.findById({_id:req.user.username},function(err,info){
 		//console.log(req.user.username)
 		if(err){
@@ -27,12 +38,19 @@ infoRouter.route('/')
 		}
 
 	})
-})
-.post(function(req,res){
+}
+function postUserInfo(req,res){
+	if(req.body.first){
+		console.log(req.body.first)
+		UserInfo.findById({_id:req.user.username},function(err,info){
 
-})
-.put(function(req,res){
-
-})
-
+		})
+	}
+	else{
+		console.log(req.body.city)
+		UserInfo.findById({_id:req.user.username},function(err,info){
+			
+		})
+	}
+}
 module.exports = infoRouter;

@@ -17,7 +17,7 @@ export function fetchInfo(){
 }
 
 //reducer
-export const info =(state=[],action)=>{
+export const info =(state={},action)=>{
 	switch(action.type){
 		case 'GET_INFO':
 			return action.info
