@@ -1,3 +1,5 @@
+var qs = require('querystring');
+
 //action
 export function getInfo(info){
 	return{
@@ -16,6 +18,20 @@ export function fetchInfo(){
 	}
 }
 
+export function postInfo(data){
+	return(dispatch)=>{
+		fetch('/info',{
+			method:'POST',
+			credentials:'same-origin',
+			headers: {'Content-Type':'application/x-www-form-urlencoded'}, 
+			body:qs.stringify(data)
+		})
+		.then(response => response.json())
+		.then(data=>{
+			dispatch(getInfo(data))
+		})
+	}
+}
 //reducer
 export const info =(state={},action)=>{
 	switch(action.type){

@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
-import {fetchInfo,getInfo} from '../redux/modules/infoModule';
+import {fetchInfo,postInfo} from '../redux/modules/infoModule';
 import { Route, Redirect } from 'react-router'
-var qs = require('querystring');
+
 
 class Profile extends Component{
 	constructor(props){
@@ -15,47 +15,38 @@ class Profile extends Component{
 			state:''
 		}
 		this.handleChange = this.handleChange.bind(this);
+		this.nameData = this.nameData.bind(this);
+		this.locData = this.locData.bind(this);
 	}
 	handleChange(event){
 		this.setState({[event.target.name]:event.target.value})
 	}
-	componentDidMount(){
-		this.props.user?
-		this.props.fetchInfo():
-		this.props.history.push('/reglog');
-	}
-	postInfo(data){
-		//e.preventDefault();
-		let formData;
-		
-		switch(data){
-			case 'name':
-				formData={
-						first: this.state.first,
-						middle: this.state.middle,
-						last: this.state.last
-					}
-				break;
-			case 'location':
-				formData={
-						city: this.state.city,
-						state: this.state.state
-				}
-				break;
+	initialState(){
+		const initState={
+			first: '',
+			middle: '',
+			last: '',
+			city:'',
+			state:''
 		}
-		//console.log(data,formData)
-		
-		fetch('/info',{
-			method:'POST',
-			credentials:'same-origin',
-			headers: {'Content-Type':'application/x-www-form-urlencoded'}, 
-			body:qs.stringify(formData)
-		})
-		.then(response => response.json())
-		.then(data=>this.props.getInfo(data))
+		return initState;
 	}
-	info(){
-		
+	nameData(){
+		let formData={
+			first: this.state.first,
+			middle: this.state.middle,
+			last: this.state.last
+		}
+		return formData
+	}
+	locData(){
+		let formData={
+			city: this.state.city,
+			state: this.state.state
+		}
+		return formData
+	}
+	info(){	
 		return(
 			<div className='info'>
 				<p>Name: {
@@ -68,8 +59,12 @@ class Profile extends Component{
 					this.props.info.info[0].state}
 				</p>
 			</div>
-		)
-		
+		)	
+	}
+	componentDidMount(){
+		this.props.user?
+		this.props.fetchInfo():
+		this.props.history.push('/reglog');
 	}
 	render(){
 		return(
@@ -77,8 +72,12 @@ class Profile extends Component{
 				<h2>Profile</h2>
 				{this.props.info.info?this.info():null}
 				<div className='flexBox'>
-					<form className='boxChild' onSubmit={(e)=>
-							{this.postInfo('name');e.preventDefault()}}>
+					<form className='boxChild' autoComplete='off' 
+						onSubmit={(e)=>
+							{e.preventDefault();
+								this.props.postInfo(this.nameData());
+								this.setState(this.initialState())
+							}}>
 						<input type='text' placeholder='First Name' name='first'
 						value={this.state.first} onChange={this.handleChange}/>
 						<br/>
@@ -90,8 +89,12 @@ class Profile extends Component{
 						<br/>
 						<input type='submit' value='Update name' />
 					</form>
-					<form className='boxChild' onSubmit={(e)=>
-							{this.postInfo('location');e.preventDefault()}}>
+					<form className='boxChild' autoComplete='off'
+						onSubmit={(e)=>
+							{e.preventDefault();
+								this.props.postInfo(this.locData());
+								this.setState(this.initialState())
+							}}>
 						<input type='text' placeholder='City' name='city'
 						value={this.state.city} onChange={this.handleChange}/>
 						<br/>
@@ -115,7 +118,7 @@ const mapStateToProps=(state)=>{
 const mapDispatchToProps=(dispatch)=>{
 	return{
 		fetchInfo:()=>dispatch(fetchInfo()),
-		getInfo:(data)=>dispatch(getInfo(data))
+		postInfo:(data)=>dispatch(postInfo(data))
 	}
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Profile);
