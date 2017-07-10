@@ -11,6 +11,7 @@ infoRouter.route('/')
 .post(function(req,res){
 	postUserInfo(req,res)
 })
+
 .put(function(req,res){
 
 })
@@ -23,7 +24,14 @@ function getUserInfo(req,res){
 		}
 		else if(!info){
 			var data ={
-				_id: req.user.username
+				_id: req.user.username,
+				info:[{
+					first:'',
+					middle:'',
+					last:'',
+					city:'',
+					state:''
+			}]
 			}
 			console.log(data)
 			UserInfo.create(data,function(err,info){
@@ -40,17 +48,24 @@ function getUserInfo(req,res){
 	})
 }
 function postUserInfo(req,res){
-	if(req.body.first){
-		console.log(req.body.first)
-		UserInfo.findById({_id:req.user.username},function(err,info){
-
-		})
-	}
-	else{
-		console.log(req.body.city)
-		UserInfo.findById({_id:req.user.username},function(err,info){
-			
-		})
-	}
+	UserInfo.findById({_id:req.user.username},function(err,data){
+		if(err) throw err;
+		/*
+		if(!data.info[0]){
+			data.info[0] ={};
+		}*/
+		if(req.body.first || req.body.middle || req.body.last){
+			data.info[0].first = req.body.first || data.info[0].first 
+			data.info[0].middle = req.body.middle || data.info[0].middle 
+			data.info[0].last = req.body.last || data.info[0].last 
+		}
+		else{
+			data.info[0].city = req.body.city || data.info[0].city 
+			data.info[0].state = req.body.state || data.info[0].state 
+		}
+		data.markModified('info');
+		data.save();
+		res.json(data)
+	})
 }
 module.exports = infoRouter;

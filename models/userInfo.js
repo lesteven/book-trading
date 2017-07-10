@@ -1,15 +1,16 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var Info = new Schema({
+	first:String,
+	middle:String,
+	last:String,
+	city:String,
+	state:String
+})
 var UserInfo = new Schema({
 	_id:{type:String,required:true},
-	info:[{
-		first:String,
-		middle:String,
-		Last:String,
-		City:String,
-		State:String
-	}],
+	info:{type:[Info]},
 	books:{type:[]},
 	orequest:{type:[]},
 	yrequest:{type:[]}

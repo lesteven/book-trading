@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
-import {fetchInfo} from '../redux/modules/infoModule';
+import {fetchInfo,getInfo} from '../redux/modules/infoModule';
 import { Route, Redirect } from 'react-router'
 var qs = require('querystring');
 
@@ -43,7 +43,7 @@ class Profile extends Component{
 				}
 				break;
 		}
-		console.log(data,formData)
+		//console.log(data,formData)
 		
 		fetch('/info',{
 			method:'POST',
@@ -52,16 +52,30 @@ class Profile extends Component{
 			body:qs.stringify(formData)
 		})
 		.then(response => response.json())
+		.then(data=>this.props.getInfo(data))
+	}
+	info(){
+		
+		return(
+			<div className='info'>
+				<p>Name: {
+					this.props.info.info[0].first + ' ' +
+					this.props.info.info[0].middle + ' ' +
+					this.props.info.info[0].last}
+				</p>
+				<p>Location: {
+					this.props.info.info[0].city + ' ' +
+					this.props.info.info[0].state}
+				</p>
+			</div>
+		)
+		
 	}
 	render(){
 		return(
 			<div>
 				<h2>Profile</h2>
-				<div className='info'>
-					<p>Name:</p>
-					<p>City:</p>
-					<p>State:</p>
-				</div>
+				{this.props.info.info?this.info():null}
 				<div className='flexBox'>
 					<form className='boxChild' onSubmit={(e)=>
 							{this.postInfo('name');e.preventDefault()}}>
@@ -100,7 +114,8 @@ const mapStateToProps=(state)=>{
 }
 const mapDispatchToProps=(dispatch)=>{
 	return{
-		fetchInfo:()=>dispatch(fetchInfo())
+		fetchInfo:()=>dispatch(fetchInfo()),
+		getInfo:(data)=>dispatch(getInfo(data))
 	}
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Profile);
