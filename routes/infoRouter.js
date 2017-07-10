@@ -50,14 +50,11 @@ function getUserInfo(req,res){
 function postUserInfo(req,res){
 	UserInfo.findById({_id:req.user.username},function(err,data){
 		if(err) throw err;
-		if(req.body.first || req.body.middle || req.body.last){
-			data.info[0].first = req.body.first || data.info[0].first 
-			data.info[0].middle = req.body.middle || data.info[0].middle 
-			data.info[0].last = req.body.last || data.info[0].last 
-		}
-		else if(req.body.city || req.body.state){
-			data.info[0].city = req.body.city || data.info[0].city 
-			data.info[0].state = req.body.state || data.info[0].state 
+		var keys = Object.keys(req.body)
+		//console.log(data.info[0][keys[0]])
+		for(var i = 0; i < keys.length; i++){
+			//console.log(data.info[0][keys[i]],req.body[keys[i]],keys[i]);
+			data.info[0][keys[i]] = req.body[keys[i]] || data.info[0][keys[i]]
 		}
 		data.markModified('info');
 		data.save();
