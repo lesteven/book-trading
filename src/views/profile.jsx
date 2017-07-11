@@ -63,7 +63,7 @@ class Profile extends Component{
 	}
 	componentDidMount(){
 		this.props.user?
-		this.props.fetchInfo():
+		this.props.fetchInfo('/info'):
 		this.props.history.push('/reglog');
 	}
 	render(){
@@ -75,7 +75,7 @@ class Profile extends Component{
 					<form className='boxChild' autoComplete='off' 
 						onSubmit={(e)=>
 							{e.preventDefault();
-								this.props.postInfo(this.nameData());
+								this.props.postInfo('/info',this.nameData());
 								this.setState(this.initialState())
 							}}>
 						<input type='text' placeholder='First Name' name='first'
@@ -92,7 +92,7 @@ class Profile extends Component{
 					<form className='boxChild' autoComplete='off'
 						onSubmit={(e)=>
 							{e.preventDefault();
-								this.props.postInfo(this.locData());
+								this.props.postInfo('/info',this.locData());
 								this.setState(this.initialState())
 							}}>
 						<input type='text' placeholder='City' name='city'
@@ -117,8 +117,8 @@ const mapStateToProps=(state)=>{
 }
 const mapDispatchToProps=(dispatch)=>{
 	return{
-		fetchInfo:()=>dispatch(fetchInfo()),
-		postInfo:(data)=>dispatch(postInfo(data))
+		fetchInfo:(url)=>dispatch(fetchInfo(url)),
+		postInfo:(url,data)=>dispatch(postInfo(url,data))
 	}
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Profile);

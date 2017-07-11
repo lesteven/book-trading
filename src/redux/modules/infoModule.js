@@ -8,9 +8,9 @@ export function getInfo(info){
 	}
 }
 
-export function fetchInfo(){
+export function fetchInfo(url){
 	return(dispatch)=>{
-		fetch('/info',{credentials:'same-origin'})
+		fetch(url,{credentials:'same-origin'})
 			.then(response=> response.json())
 			.then(data=>{
 				dispatch(getInfo(data))
@@ -18,9 +18,9 @@ export function fetchInfo(){
 	}
 }
 
-export function postInfo(data){
+export function postInfo(url,data){
 	return(dispatch)=>{
-		fetch('/info',{
+		fetch(url,{
 			method:'POST',
 			credentials:'same-origin',
 			headers: {'Content-Type':'application/x-www-form-urlencoded'}, 
