@@ -1,7 +1,11 @@
 import React,{Component} from 'react';
-
+import { connect } from 'react-redux';
+import {fetchBooks} from '../redux/modules/bookModule';
 
 class Home extends Component{
+	componentDidMount(){
+		this.props.fetchBooks('/allbooks')
+	}
 	render(){
 		return(
 			<div>
@@ -11,4 +15,15 @@ class Home extends Component{
 	}
 }
 
-export default Home;
+const mapStateToProps=(state)=>{
+	return{
+		user:state.user,
+		books:state.books
+	}
+}
+const mapDispatchToProps=(dispatch)=>{
+	return{
+		fetchBooks:(url)=>dispatch(fetchBooks(url))
+	}
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Home);

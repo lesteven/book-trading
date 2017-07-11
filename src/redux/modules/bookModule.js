@@ -6,9 +6,9 @@ export function getBooks(books){
 	}
 }
 
-export function fetchBooks(){
+export function fetchBooks(url){
 	return(dispatch)=>{
-		fetch('/books',{credentials:'same-origin'})
+		fetch(url,{credentials:'same-origin'})
 			.then(response=>response.json())
 			.then(data=>{
 				dispatch(getBooks(data))

@@ -1,7 +1,9 @@
 var express = require('express');
 var infoRouter = express.Router();
 var UserInfo = require('../models/userInfo');
+var AllBooks = require('../models/allBooks');
 var axios =require('axios');
+
 
 infoRouter.route('/')
 
@@ -34,7 +36,7 @@ function getUserInfo(req,res){
 					last:'',
 					city:'',
 					state:''
-			}]
+				}]
 			}
 			console.log(data)
 			UserInfo.create(data,function(err,info){
@@ -47,7 +49,6 @@ function getUserInfo(req,res){
 			console.log('created already')
 			res.json(info)
 		}
-
 	})
 }
 function postUserInfo(req,res){
@@ -67,16 +68,20 @@ function postUserInfo(req,res){
 function searchBookAPI(req,res){
 	var url ='https://www.googleapis.com/books/v1/volumes?q='
 	url += req.body.query
+	console.log(url)
 	axios.get(url)
 	.then(response=>{
 		var title = response.data.items[0].volumeInfo.title
-		var thumbnail = response.data.items[0].volumeInfo.imageLinks.smallThumbnail
+		var thumbnail = (response.data.items[0].volumeInfo.imageLinks?
+			response.data.items[0].volumeInfo.imageLinks.smallThumbnail:
+		 'https://books.google.com/books/content?id=1&printsec=frontcover&img=1&zoom=1')
 		var bookData ={
 			title:title,
 			thumbnail:thumbnail
 		}
 		//console.log(data)
 		postBookInfo(req,res,bookData)
+		//postAllBook(req,res,bookData)
 	})
 	.catch(error=>{
 		console.log(error)
@@ -93,6 +98,26 @@ function postBookInfo(req,res,bookData){
 		data.markModified('books');
 		data.save();
 		res.json(data)
+	})
+}
+function postAllBook(req,res,bookData){
+	AllBooks.findById({_id:'all'},function(err,data){
+		if(err){
+			console.log(err)
+		}
+		if(!data){
+			AllBooks.create({_id:'all'},function(err,books){
+				if(err) throw err;
+				console.log(books)
+			})
+		}
+		else{
+			bookData.owner = req.user.username
+			data.books.push(bookData);
+			data.markModified('books')
+			data.save();
+		}		
+		console.log(data)
 	})
 }
 module.exports = infoRouter;

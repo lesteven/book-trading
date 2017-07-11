@@ -1,14 +1,17 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var Books = new Schema({
+	title:String,
+	thumbnail:String,
+	owner:String,
+	requests:[]
+})
 var AllBooks = new Schema({
-	books:{[
-		{
-			title:String,
-			owner:String,
-			requests:[]
-		}
-	]}
+	_id:{type:String,required:true},
+	books:{type:[Books]}
+},{
+	_id:false
 })
 
 module.exports = mongoose.model('AllBooks',AllBooks)
