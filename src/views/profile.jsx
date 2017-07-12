@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
-import {fetchInfo,postInfo} from '../redux/modules/infoModule';
+import {fetchInfo,postInfo,getInfo} from '../redux/modules/infoModule';
 import { Route, Redirect } from 'react-router'
 
 
@@ -63,7 +63,7 @@ class Profile extends Component{
 	}
 	componentDidMount(){
 		this.props.user?
-		this.props.fetchInfo('/info'):
+		this.props.fetchInfo('/info',this.props.getInfo):
 		this.props.history.push('/reglog');
 	}
 	render(){
@@ -75,7 +75,8 @@ class Profile extends Component{
 					<form className='boxChild' autoComplete='off' 
 						onSubmit={(e)=>
 							{e.preventDefault();
-								this.props.postInfo('/info',this.nameData());
+								this.props.postInfo('/info',
+									this.nameData(),this.props.getInfo);
 								this.setState(this.initialState())
 							}}>
 						<input type='text' placeholder='First Name' name='first'
@@ -92,7 +93,8 @@ class Profile extends Component{
 					<form className='boxChild' autoComplete='off'
 						onSubmit={(e)=>
 							{e.preventDefault();
-								this.props.postInfo('/info',this.locData());
+								this.props.postInfo('/info',
+									this.locData(),this.props.getInfo);
 								this.setState(this.initialState())
 							}}>
 						<input type='text' placeholder='City' name='city'
@@ -117,8 +119,9 @@ const mapStateToProps=(state)=>{
 }
 const mapDispatchToProps=(dispatch)=>{
 	return{
-		fetchInfo:(url)=>dispatch(fetchInfo(url)),
-		postInfo:(url,data)=>dispatch(postInfo(url,data))
+		fetchInfo:(url,actFunc)=>dispatch(fetchInfo(url,actFunc)),
+		postInfo:(url,data,actFunc)=>dispatch(postInfo(url,data,actFunc)),
+		getInfo:(info)=>dispatch(getInfo(info))
 	}
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Profile);

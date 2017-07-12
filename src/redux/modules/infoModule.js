@@ -8,17 +8,31 @@ export function getInfo(info){
 	}
 }
 
-export function fetchInfo(url){
+
+//reducer
+export const info =(state={},action)=>{
+	switch(action.type){
+		case 'GET_INFO':
+			return action.info 
+		default:
+			return state;
+	}
+}
+
+export default info
+//////////////////////////////////////////////////
+
+export function fetchInfo(url,actFunc){
 	return(dispatch)=>{
 		fetch(url,{credentials:'same-origin'})
 			.then(response=> response.json())
 			.then(data=>{
-				dispatch(getInfo(data))
+				actFunc(data)
 			})
 	}
 }
 
-export function postInfo(url,data){
+export function postInfo(url,data,actFunc){
 	return(dispatch)=>{
 		fetch(url,{
 			method:'POST',
@@ -28,18 +42,7 @@ export function postInfo(url,data){
 		})
 		.then(response => response.json())
 		.then(data=>{
-			dispatch(getInfo(data))
+			actFunc(data)
 		})
 	}
 }
-//reducer
-export const info =(state={},action)=>{
-	switch(action.type){
-		case 'GET_INFO':
-			return action.info
-		default:
-			return state;
-	}
-}
-
-export default info

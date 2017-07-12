@@ -1,18 +1,19 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
-import {fetchBooks} from '../redux/modules/bookModule';
-import TotalList from '../components/totalList.jsx';
+import {getBooks} from '../redux/modules/bookModule';
+import {fetchInfo} from '../redux/modules/infoModule';
+import BookList from '../components/bookList.jsx';
 
 
 class Home extends Component{
 	componentDidMount(){
-		this.props.fetchBooks('/allbooks')
+		this.props.fetchInfo('/allbooks',this.props.getBooks)
 	}
 	render(){
 		return(
 			<div>
 				<h2>Book Trading</h2>
-				<TotalList />
+				<BookList books={this.props.books.books}/>
 			</div>
 		)
 	}
@@ -26,7 +27,8 @@ const mapStateToProps=(state)=>{
 }
 const mapDispatchToProps=(dispatch)=>{
 	return{
-		fetchBooks:(url)=>dispatch(fetchBooks(url))
+		fetchInfo:(url,actFunc)=>dispatch(fetchInfo(url,actFunc)),
+		getBooks:(books)=>dispatch(getBooks(books))
 	}
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Home);

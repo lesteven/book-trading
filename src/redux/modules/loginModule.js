@@ -7,16 +7,6 @@ export function userLogin(user){
 }
 
 
-export function fetchUser(){
-	return (dispatch) =>{
-		fetch('/users', { credentials : 'same-origin' })
-			.then((response)=> response.json())
-			.then(data => {
-				dispatch(userLogin(data.username))
-			})
-	}
-}
-
 //reducer
 export const user = (state ='', action)=>{
 	switch(action.type){

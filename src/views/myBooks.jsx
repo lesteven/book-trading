@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
-import {fetchInfo,postInfo} from '../redux/modules/infoModule';
+import {fetchInfo,postInfo,getInfo} from '../redux/modules/infoModule';
 import BookList from '../components/bookList.jsx'
 
 
@@ -17,7 +17,7 @@ class MyBooks extends Component{
 	}
 	componentDidMount(){
 		this.props.user?
-		this.props.fetchInfo('/info'):
+		this.props.fetchInfo('/info',this.props.getInfo):
 		this.props.history.push('/reglog');
 	}
 	searchData(){
@@ -32,7 +32,8 @@ class MyBooks extends Component{
 				<h2>My Books</h2>
 				<form autoComplete='off' onSubmit={(e)=>
 					{e.preventDefault();
-						this.props.postInfo('/info/myBooks',this.searchData());
+						this.props.postInfo('/info/myBooks',
+							this.searchData(),this.props.getInfo);
 						this.setState({query:''})
 					}}>
 					<input type='text' name='query'
@@ -40,7 +41,7 @@ class MyBooks extends Component{
 					placeholder='Add Book'/>
 					<input type='submit' value='Add'/>
 				</form>
-				<BookList/>
+				<BookList books={this.props.info.books}/>
 			</div>
 		)
 	}
@@ -54,8 +55,9 @@ const mapStateToProps=(state)=>{
 }
 const mapDispatchToProps=(dispatch)=>{
 	return{
-		fetchInfo:(url)=>dispatch(fetchInfo(url)),
-		postInfo:(url,data)=>dispatch(postInfo(url,data))
+		fetchInfo:(url,actFunc)=>dispatch(fetchInfo(url,actFunc)),
+		postInfo:(url,data,actFunc)=>dispatch(postInfo(url,data,actFunc)),
+		getInfo:(info)=>dispatch(getInfo(info))
 	}
 }
 export default connect(mapStateToProps,mapDispatchToProps)(MyBooks);

@@ -3,12 +3,9 @@ import { connect } from 'react-redux';
 import Book from './book.jsx';
 
 class BookList extends Component{
-	componentWillReceiveProps(props){
-		console.log('received',props)
-	}
 	list(){
 		let list;
-		list = this.props.info.books.map((book,index)=>{
+		list = this.props.books.map((book,index)=>{
 			return <Book 
 				key = {index}
 				thumbnail= {book.thumbnail}
@@ -20,17 +17,11 @@ class BookList extends Component{
 	render(){
 		return(
 			<div className='flexBox'>
-			{this.props.info.books? this.list():null}
+			{this.props.books? this.list():null}
 			</div>
 		)
 	}
 }
 
-const mapStateToProps=(state)=>{
-	return{
-		user:state.user,
-		info:state.info
-	}
-}
 
-export default connect(mapStateToProps)(BookList);
+export default BookList;

@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
-import {fetchUser} from '../redux/modules/loginModule'
+import {userLogin} from '../redux/modules/loginModule';
+import {fetchInfo} from '../redux/modules/infoModule';
 import {
   BrowserRouter as Router,
   Route,
@@ -14,7 +15,7 @@ import MyBooks from '../views/myBooks.jsx';
 class NavBar extends Component{
 
 	componentDidMount(){
-		this.props.getUser()
+		this.props.fetchInfo('/users',this.props.userLogin)
 		
 	}
 	removeStorage(){
@@ -24,7 +25,7 @@ class NavBar extends Component{
 		return(
 			<span>
 				<Link to = '/mybooks'>My Books</Link>
-				<Link to ='/profile'>{this.props.user}</Link>
+				<Link to ='/profile'>{this.props.user.username}</Link>
 				<a href ='/users/logout' onClick={this.removeStorage}>Log Out</a>
 			</span>
 		)
@@ -40,7 +41,7 @@ class NavBar extends Component{
 			<div>
 				<nav className = 'navBar'>
 					<Link to ='/'>Home</Link>
-					{this.props.user?
+					{this.props.user.username?
 						this.login():this.noLogin()}
 				</nav>
 
@@ -56,13 +57,15 @@ class NavBar extends Component{
 
 const mapStateToProps = (state) =>{
 	return{
-		user:state.user
+		user:state.user,
+		info:state.info
 	};
 };
 
 const mapDispatchToProps = (dispatch) =>{
 	return{
-		getUser: () => dispatch(fetchUser())
+		fetchInfo:(url,actFunc)=>dispatch(fetchInfo(url,actFunc)),
+		userLogin:(user) => dispatch(userLogin(user))
 	}
 }
 
