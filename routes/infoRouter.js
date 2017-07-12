@@ -81,7 +81,7 @@ function searchBookAPI(req,res){
 		}
 		//console.log(data)
 		postBookInfo(req,res,bookData)
-		//postAllBook(req,res,bookData)
+		postAllBook(req,res,bookData)
 	})
 	.catch(error=>{
 		console.log(error)
@@ -104,12 +104,6 @@ function postAllBook(req,res,bookData){
 	AllBooks.findById({_id:'all'},function(err,data){
 		if(err){
 			console.log(err)
-		}
-		if(!data){
-			AllBooks.create({_id:'all'},function(err,books){
-				if(err) throw err;
-				console.log(books)
-			})
 		}
 		else{
 			bookData.owner = req.user.username

@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
 import {fetchBooks} from '../redux/modules/bookModule';
+import TotalList from '../components/totalList.jsx';
+
 
 class Home extends Component{
 	componentDidMount(){
@@ -10,6 +12,7 @@ class Home extends Component{
 		return(
 			<div>
 				<h2>Book Trading</h2>
+				<TotalList />
 			</div>
 		)
 	}
