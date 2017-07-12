@@ -8,10 +8,14 @@ var Info = new Schema({
 	city:String,
 	state:String
 })
+var Books = new Schema({
+	title:String,
+	thumbnail:String
+})
 var UserInfo = new Schema({
 	_id:{type:String,required:true},
 	info:{type:[Info]},
-	books:{type:[]},
+	books:{type:[Books]},
 	orequest:{type:[]},
 	yrequest:{type:[]}
 },{

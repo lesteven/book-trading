@@ -32,16 +32,18 @@ class MyBooks extends Component{
 				<h2>My Books</h2>
 				<form autoComplete='off' onSubmit={(e)=>
 					{e.preventDefault();
-						this.props.postInfo('/info/myBooks',
+						this.props.postInfo('/info/myBooks','POST',
 							this.searchData(),this.props.getInfo);
 						this.setState({query:''})
 					}}>
 					<input type='text' name='query'
 					onChange ={this.handleChange}
+					value = {this.state.query}
 					placeholder='Add Book'/>
 					<input type='submit' value='Add'/>
 				</form>
-				<BookList books={this.props.info.books}/>
+				<BookList books={this.props.info.books}
+						 	id={this.props.info._id}/>
 			</div>
 		)
 	}
@@ -56,7 +58,8 @@ const mapStateToProps=(state)=>{
 const mapDispatchToProps=(dispatch)=>{
 	return{
 		fetchInfo:(url,actFunc)=>dispatch(fetchInfo(url,actFunc)),
-		postInfo:(url,data,actFunc)=>dispatch(postInfo(url,data,actFunc)),
+		postInfo:(url,method,data,actFunc)=>
+				dispatch(postInfo(url,method,data,actFunc)),
 		getInfo:(info)=>dispatch(getInfo(info))
 	}
 }

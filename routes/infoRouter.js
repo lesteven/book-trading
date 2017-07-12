@@ -21,6 +21,12 @@ infoRouter.route('/myBooks')
 	searchBookAPI(req,res)
 })
 
+.delete(function(req,res){
+	deleteMyBook(req,res)
+	//console.log(req.body)
+	deleteFromTotal(req,res)
+})
+
 function getUserInfo(req,res){
 	UserInfo.findById({_id:req.user.username},function(err,info){
 		//console.log(req.user.username)
@@ -81,10 +87,29 @@ function searchBookAPI(req,res){
 		}
 		//console.log(data)
 		postBookInfo(req,res,bookData)
-		postAllBook(req,res,bookData)
+		//postAllBook(req,res,bookData)
 	})
 	.catch(error=>{
 		console.log(error)
+	})
+}
+
+//post functions
+function postAllBook(req,res,bookData,id){
+	console.log(bookData)
+	AllBooks.findById({_id:'all'},function(err,data){
+		if(err){
+			console.log(err)
+		}
+		else{
+			bookData._id = id;
+			bookData.owner = req.user.username
+			var index = data.books.push(bookData);
+			//console.log(data.books[index-1]._id)
+			data.markModified('books')
+			data.save();
+		}		
+		//console.log('all',data)
 	})
 }
 function postBookInfo(req,res,bookData){
@@ -93,24 +118,36 @@ function postBookInfo(req,res,bookData){
 		if(err){
 			console.log(err)
 		}
-		data.books.push(bookData)
-		console.log(bookData)
+		var index = data.books.push(bookData)
+		var id = data.books[index-1]._id
+		//console.log(id)
 		data.markModified('books');
 		data.save();
+		postAllBook(req,res,bookData,id)
+		res.json(data)
+
+	})
+}
+
+//delete functions
+function deleteMyBook(req,res){
+	UserInfo.findById({_id:req.user.username},function(err,data){
+		//var index = data.books.indexOf(req.body.title)
+		console.log(req.body.index)
+		data.books.splice(req.body.index,1)
+		data.markModified('books')
+		data.save()
 		res.json(data)
 	})
 }
-function postAllBook(req,res,bookData){
-	AllBooks.findById({_id:'all'},function(err,data){
-		if(err){
-			console.log(err)
-		}
-		else{
-			bookData.owner = req.user.username
-			data.books.push(bookData);
-			data.markModified('books')
-			data.save();
-		}		
+function deleteFromTotal(req,res){
+	console.log(req.body._id)
+	AllBooks.findOneAndUpdate({'books_id':req.body_id},
+		{
+			$pull: {books:{_id:req.body._id}}
+		},
+		{new: true},
+		function(err,data){
 		console.log(data)
 	})
 }

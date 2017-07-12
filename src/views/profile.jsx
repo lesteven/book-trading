@@ -75,7 +75,7 @@ class Profile extends Component{
 					<form className='boxChild' autoComplete='off' 
 						onSubmit={(e)=>
 							{e.preventDefault();
-								this.props.postInfo('/info',
+								this.props.postInfo('/info', 'POST',
 									this.nameData(),this.props.getInfo);
 								this.setState(this.initialState())
 							}}>
@@ -93,7 +93,7 @@ class Profile extends Component{
 					<form className='boxChild' autoComplete='off'
 						onSubmit={(e)=>
 							{e.preventDefault();
-								this.props.postInfo('/info',
+								this.props.postInfo('/info', 'POST',
 									this.locData(),this.props.getInfo);
 								this.setState(this.initialState())
 							}}>
@@ -120,7 +120,8 @@ const mapStateToProps=(state)=>{
 const mapDispatchToProps=(dispatch)=>{
 	return{
 		fetchInfo:(url,actFunc)=>dispatch(fetchInfo(url,actFunc)),
-		postInfo:(url,data,actFunc)=>dispatch(postInfo(url,data,actFunc)),
+		postInfo:(url,method,data,actFunc)=>
+				dispatch(postInfo(url,method,data,actFunc)),
 		getInfo:(info)=>dispatch(getInfo(info))
 	}
 }

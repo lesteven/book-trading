@@ -32,10 +32,10 @@ export function fetchInfo(url,actFunc){
 	}
 }
 
-export function postInfo(url,data,actFunc){
+export function postInfo(url,method,data,actFunc){
 	return(dispatch)=>{
 		fetch(url,{
-			method:'POST',
+			method:method,
 			credentials:'same-origin',
 			headers: {'Content-Type':'application/x-www-form-urlencoded'}, 
 			body:qs.stringify(data)

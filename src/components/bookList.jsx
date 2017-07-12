@@ -1,5 +1,4 @@
 import React,{Component} from 'react';
-import { connect } from 'react-redux';
 import Book from './book.jsx';
 
 class BookList extends Component{
@@ -8,8 +7,13 @@ class BookList extends Component{
 		list = this.props.books.map((book,index)=>{
 			return <Book 
 				key = {index}
+				index = {index}
 				thumbnail= {book.thumbnail}
 				title ={book.title}
+				owner = {book.owner}
+				request = {book.request}
+				id = {this.props.id}
+				_id = {book._id}
 			/>
 		})
 		return list;
