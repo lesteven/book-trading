@@ -80,10 +80,11 @@ function searchBookAPI(req,res){
 		var title = response.data.items[0].volumeInfo.title
 		var thumbnail = (response.data.items[0].volumeInfo.imageLinks?
 			response.data.items[0].volumeInfo.imageLinks.smallThumbnail:
-		 'https://books.google.com/books/content?id=1&printsec=frontcover&img=1&zoom=1')
+		 'http://books.google.com/books/content?id=1&printsec=frontcover&img=1&zoom=1')
+		var URL = url.replace(/^http/,'https')
 		var bookData ={
 			title:title,
-			thumbnail:thumbnail
+			thumbnail:URL
 		}
 		//console.log(data)
 		postBookInfo(req,res,bookData)
