@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
 import {fetchInfo,postInfo,getInfo} from '../redux/modules/infoModule';
-import BookList from '../components/bookList.jsx'
-
+import BookList from '../components/bookList.jsx';
+import Requests from '../components/requests.jsx';
 
 class MyBooks extends Component{
 	constructor(props){
@@ -42,6 +42,7 @@ class MyBooks extends Component{
 					placeholder='Add Book'/>
 					<input type='submit' value='Add'/>
 				</form>
+				<Requests/>
 				<BookList books={this.props.info.books}
 						 	id={this.props.info._id}/>
 			</div>

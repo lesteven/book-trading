@@ -41,6 +41,7 @@ input{
 	color:white;
 	padding:1.5%;
 	border:none;
+	margin:1%;
 }
 .boxChild{
 	flex:1;
@@ -53,6 +54,18 @@ input{
 }
 .boxChild2{
 	width:20%;
+}
+.yrequest{
+
+}
+.orequest{
+	background-color:#54364f;
+}
+.approved{
+	background-color:#007e98;
+}
+.decline{
+	background-color:#580201;
 }
 @media only screen and (max-width:1050px){
 	body{
