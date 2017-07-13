@@ -17,12 +17,12 @@ function getBookInfo(req,res){
 		if(!data){
 			AllBooks.create({_id:'all',books:[]},function(err,books){
 				if(err) throw err;
-				console.log('will create',books)
+				//console.log('will create',books)
 				res.json(books)
 			})
 		}
 		else{
-			console.log('already created')
+			//console.log('already created')
 			res.json(data)
 		}
 	})

@@ -9,7 +9,10 @@ class Book extends Component{
 		super(props);
 	}
 	tradeButton(){
-		if(this.props.user.username !== this.props.owner){
+		var request = this.props.request;
+		var index = request.indexOf(this.props.user.username)
+		//console.log(index)
+		if(this.props.user.username !== this.props.owner && index === -1){
 			return(
 				<button onClick={()=>this.props.postInfo('/requests',
 				'POST',this.data(),this.props.getBooks)}>

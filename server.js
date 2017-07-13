@@ -42,12 +42,12 @@ var infoRouter = require('./routes/infoRouter');
 var booksRouter = require('./routes/booksRouter');
 var requestRouter = require('./routes/requestRouter');
 
-/*
+
 app.get('*.js', function (req, res, next) {
   req.url = req.url + '.gz';
   res.set('Content-Encoding', 'gzip');
   next();
-});*/
+});
 
 app.use(express.static(__dirname + '/dist'));
 app.use('/',express.static(__dirname + '/public'));

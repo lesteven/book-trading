@@ -43,15 +43,15 @@ function getUserInfo(req,res){
 					state:''
 				}]
 			}
-			console.log(data)
+			//console.log(data)
 			UserInfo.create(data,function(err,info){
 				if(err) throw err;
-				console.log('will create')
+				//console.log('will create')
 				res.json(info)
 			})
 		}
 		else{
-			console.log('created already')
+			//console.log('created already')
 			res.json(info)
 		}
 	})
@@ -74,7 +74,7 @@ function postUserInfo(req,res){
 function searchBookAPI(req,res){
 	var url ='https://www.googleapis.com/books/v1/volumes?q='
 	url += req.body.query
-	console.log(url)
+	//console.log(url)
 	axios.get(url)
 	.then(response=>{
 		var title = response.data.items[0].volumeInfo.title
@@ -96,7 +96,7 @@ function searchBookAPI(req,res){
 
 //post functions
 function postAllBook(req,res,bookData,id){
-	console.log(bookData)
+	//console.log(bookData)
 	AllBooks.findById({_id:'all'},function(err,data){
 		if(err){
 			console.log(err)
@@ -133,7 +133,7 @@ function postBookInfo(req,res,bookData){
 function deleteMyBook(req,res){
 	UserInfo.findById({_id:req.user.username},function(err,data){
 		//var index = data.books.indexOf(req.body.title)
-		console.log(req.body.index)
+		//console.log(req.body.index)
 		data.books.splice(req.body.index,1)
 		data.markModified('books')
 		data.save()
@@ -141,14 +141,14 @@ function deleteMyBook(req,res){
 	})
 }
 function deleteFromTotal(req,res){
-	console.log(req.body._id)
+	//console.log(req.body._id)
 	AllBooks.findOneAndUpdate({'books_id':req.body_id},
 		{
 			$pull: {books:{_id:req.body._id}}
 		},
 		{new: true},
 		function(err,data){
-		console.log(data)
+		//console.log(data)
 	})
 }
 module.exports = infoRouter;

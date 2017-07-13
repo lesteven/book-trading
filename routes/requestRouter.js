@@ -13,7 +13,6 @@ requestRouter.route('/')
 requestRouter.route('/approve')
 
 .post(function(req,res){
-	console.log('approve',req.body)
 	removeFromRequest(req,res)
 	acceptTrade(req,res)
 })
@@ -21,7 +20,8 @@ requestRouter.route('/approve')
 requestRouter.route('/decline')
 
 .post(function(req,res){
-	console.log('decline',req.body)
+	removeFromRequest(req,res)
+	declineTrade(req,res)
 })
 
 function addRequestToBook(req,res){
@@ -38,7 +38,7 @@ function addRequestToBook(req,res){
 			user: req.user.username,
 			owner : book.owner
 		}
-		console.log(book.owner,book.title)
+		//console.log(book.owner,book.title)
 		sendRequestToUser(req,res,request)
 	})
 }
@@ -47,14 +47,14 @@ function sendRequestToUser(req,res,request){
 		data.orequest.push(request)
 		data.markModified('orequest');
 		data.save()
-		console.log(data.orequest)
+		//console.log(data.orequest)
 	})
 	
 	UserInfo.findById({_id:req.user.username},function(err,data){
 		data.yrequest.push(request)
 		data.markModified('yrequest');
 		data.save()
-		console.log(data.yrequest)
+		//console.log(data.yrequest)
 	})
 }
 function acceptTrade(req,res){
@@ -68,12 +68,17 @@ function acceptTrade(req,res){
 		data.yrequest.id(req.body.id).remove()
 		data.markModified('accepted');
 		data.markModified('yrequest')
-		console.log(data.accepted,data.yrequest)
+		//console.log(data.accepted,data.yrequest)
 		data.save()
 	})
 }
 function declineTrade(req,res){
+	UserInfo.findById({_id:req.body.user},function(err,data){
 
+		data.yrequest.id(req.body.id).remove()
+		data.markModified('yrequest')
+		data.save()
+	})
 }
 function removeFromRequest(req,res){
 	UserInfo.findById({_id:req.user.username},function(err,data){
@@ -81,7 +86,7 @@ function removeFromRequest(req,res){
 		data.markModified('orequest');
 		data.save()
 		res.json(data)
-		console.log(data.orequest)
+		//console.log(data.orequest)
 	})
 }
 module.exports = requestRouter;

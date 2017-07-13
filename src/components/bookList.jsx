@@ -11,7 +11,7 @@ class BookList extends Component{
 				thumbnail= {book.thumbnail}
 				title ={book.title}
 				owner = {book.owner}
-				request = {book.request}
+				request = {book.requests}
 				id = {this.props.id}
 				_id = {book._id}
 			/>
