@@ -17,7 +17,8 @@ var UserInfo = new Schema({
 	info:{type:[Info]},
 	books:{type:[Books]},
 	orequest:{type:[]},
-	yrequest:{type:[]}
+	yrequest:{type:[]},
+	accepted:{type:[]}
 },{
 	_id:false
 })	

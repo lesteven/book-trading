@@ -23,10 +23,9 @@ infoRouter.route('/myBooks')
 
 .delete(function(req,res){
 	deleteMyBook(req,res)
-	//console.log(req.body)
 	deleteFromTotal(req,res)
 })
-
+//user info functions
 function getUserInfo(req,res){
 	UserInfo.findById({_id:req.user.username},function(err,info){
 		//console.log(req.user.username)
@@ -71,6 +70,7 @@ function postUserInfo(req,res){
 		res.json(data)
 	})
 }
+//get book API
 function searchBookAPI(req,res){
 	var url ='https://www.googleapis.com/books/v1/volumes?q='
 	url += req.body.query

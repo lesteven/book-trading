@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
 import {postInfo,getInfo} from '../redux/modules/infoModule';
+import {getBooks} from '../redux/modules/bookModule';
 
 
 class Book extends Component{
@@ -10,7 +11,10 @@ class Book extends Component{
 	tradeButton(){
 		if(this.props.user.username !== this.props.owner){
 			return(
-				<button>Trade</button>
+				<button onClick={()=>this.props.postInfo('/requests',
+				'POST',this.data(),this.props.getBooks)}>
+					Trade
+				</button>
 			)
 		}
 	}
@@ -54,7 +58,8 @@ const mapDispatchToProps=(dispatch)=>{
 	return{
 		postInfo:(url,method,data,actFunc)=>
 				dispatch(postInfo(url,method,data,actFunc)),
-		getInfo:(info)=>dispatch(getInfo(info))
+		getInfo:(info)=>dispatch(getInfo(info)),
+		getBooks:(books)=>dispatch(getBooks(books))
 	}
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Book);
